@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 
-import axios from "../utils/axios";
-import type { RegisterRequest, RegisterResponse } from "../types";
+import router from "@/router";
+import axios from "@/utils/axios";
 
 export const useAuthStore = defineStore({
   id: "auth",
@@ -9,36 +9,45 @@ export const useAuthStore = defineStore({
     user: null,
     token: window.localStorage.getItem("token") || null,
     roles: [] as string[],
+    returnUrl: null,
   }),
   getters: {
     isAuthenticated: (state) => !!state.token,
-    isAdmin: (state) => state.roles.includes("admin"),
+    isAdmin: (state) => state.roles.includes("ROLE_ADMIN"),
   },
   actions: {
     async login({ email, password }: { email: string; password: string }) {
-      const response = await axios.post("/auth/login", { email, password });
+      const { data: result } = await axios.post("/auth/login", {
+        email,
+        password,
+      });
 
-      axios.defaults.headers.common["x-access-token"] = response.data.token;
-      window.localStorage.setItem("token", response.data.token);
+      axios.defaults.headers.common["x-access-token"] = result.data.token;
+      window.localStorage.setItem("token", result.data.token);
 
-      this.user = response.data.user;
-      this.token = response.data.token;
-      this.roles = response.data.roles;
-    },
+      this.user = result.data.user;
+      this.token = result.data.token;
+      this.roles = result.data.roles;
 
-    async register(data: RegisterRequest): Promise<RegisterResponse> {
-      const response = await axios.post("/auth/register", data);
-
-      return response.data;
+      router.push(this.returnUrl || "/");
     },
 
     logout() {
       this.user = null;
       this.token = null;
       this.roles = [];
+      router.push("/login");
     },
 
     async me() {
+      if (!this.token) {
+        return;
+      }
+
+      if (this.user) {
+        return this.user;
+      }
+
       const response = await axios.get("/auth/me");
 
       this.user = response.data.user;
