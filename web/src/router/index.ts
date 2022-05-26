@@ -51,6 +51,11 @@ const router = createRouter({
       path: "/gucci",
       component: () => import("@/views/GucciView.vue"),
     },
+    {
+      path: "/car",
+      name: "car",
+      component: () => import("@/views/CarView.vue"),
+    },
   ],
 });
 
