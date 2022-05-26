@@ -35,8 +35,7 @@ VALUES
         '',
         'john',
         'doe',
-        '',
-        '',
+        '2018-01-01 00:00:00',
         1,
         '2018-01-01 00:00:00',
         '2018-01-01 00:00:00'
@@ -67,11 +66,10 @@ VALUES
         'jamesdoe@example.com',
         -- Password secret42
         '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm',
-        '',
+        '1',
         'james',
         'doe',
-        '',
-        '',
+        '2018-01-01 00:00:00',
         2,
         '2018-01-01 00:00:00',
         '2018-01-01 00:00:00'
