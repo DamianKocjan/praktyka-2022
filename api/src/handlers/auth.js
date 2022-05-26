@@ -14,6 +14,7 @@ async function getRoles(userId) {
   return roles;
 }
 
+// @TODO: you can login without creating account
 module.exports.login = async (req, res, next) => {
   try {
     const user = await authenticateUser(req.body.email, req.body.password);
@@ -46,11 +47,11 @@ module.exports.register = async (req, res, next) => {
       dateOfBirth,
     ];
 
-    const { insertId } = await db.query(
+    const { insertId } = await query(
       "INSERT INTO user (`email`, `passwordHashed`, `phoneNumber`, `firstName`, `lastName`, `dateOfBirth`) VALUES (?,?,?,?,?,?)",
       data
     );
-    const [user] = await db.query("SELECT * FROM user WHERE id = ?", [
+    const [user] = await query("SELECT * FROM user WHERE id = ?", [
       insertId,
     ]);
     delete user.passwordHashed;
@@ -66,14 +67,16 @@ module.exports.register = async (req, res, next) => {
 
 module.exports.me = async (req, res, next) => {
   try {
-    const { userId } = req.user;
+    const { userId } = req;
 
-    const [user] = await db.query("SELECT * FROM user WHERE id = ?", [userId]);
-    const roles = getRoles(user.id);
+    const [user] = await query("SELECT * FROM user WHERE id = ?", [userId]);
+    const roles = await getRoles(user.id);
 
     if (!user) {
       throw new Error("User not found");
     }
+
+    delete user.passwordHashed;
 
     res.json({
       data: {

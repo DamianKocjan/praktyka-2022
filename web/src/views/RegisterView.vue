@@ -24,16 +24,6 @@ const dateOfBirth = ref("");
 async function register(e: Event) {
   e.preventDefault();
 
-  console.log({
-    email: email.value,
-    password: password.value,
-    confirmPassword: confirmPassword.value,
-    phoneNumber: phoneNumber.value,
-    firstName: firstName.value,
-    lastName: lastName.value,
-    dateOfBirth: dateOfBirth.value,
-  });
-
   if (
     email.value.trim().length === 0 ||
     password.value.trim().length === 0 ||

@@ -48,10 +48,10 @@ export const useAuthStore = defineStore({
         return this.user;
       }
 
-      const response = await axios.get("/auth/me");
+      const { data: result } = await axios.get("/auth/me");
 
-      this.user = response.data.user;
-      this.roles = response.data.roles;
+      this.user = result.data.user;
+      this.roles = result.data.roles;
     },
   },
 });
