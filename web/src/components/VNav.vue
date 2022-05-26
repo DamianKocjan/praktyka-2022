@@ -10,43 +10,62 @@ import {
   MenuItems,
 } from "@headlessui/vue";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/vue/outline";
+import { ref, watch } from "vue";
+
+import router from "@/router";
 import { useAuthStore } from "@/stores/auth";
-</script>
-<script lang="ts">
-export default {
-  data() {
-    return {
-      auth: useAuthStore(),
-      isMenuOpen: false,
-      navigation: [
+
+const authStore = useAuthStore();
+
+const isMenuOpen = ref(false);
+
+const navigation = ref([
+  { name: "Home", href: "/", isActive: true },
+  { name: "Sales", href: "/sales", isActive: false },
+  { name: "Projects", href: "#", isActive: false },
+  { name: "Calendar", href: "#", isActive: false },
+  { name: "Cars", href: "/car", isActive: false },
+]);
+
+function toggleMenu() {
+  isMenuOpen.value = !isMenuOpen.value;
+}
+
+watch(
+  () => authStore.isAuthenticated,
+  (isAuthenticated) => {
+    if (isAuthenticated) {
+      navigation.value = [
         { name: "Home", href: "/", isActive: true },
         { name: "Sales", href: "/sales", isActive: false },
         { name: "Projects", href: "#", isActive: false },
         { name: "Calendar", href: "#", isActive: false },
         { name: "Cars", href: "/car", isActive: false },
-      ],
-    };
-  },
-  methods: {
-    toggleMenu() {
-      this.isMenuOpen = !this.isMenuOpen;
-    },
-  },
-  watch: {
-    $route(
-      to: RouteLocationNormalizedLoaded,
-      _from: RouteLocationNormalizedLoaded
-    ) {
-      this.navigation.forEach((item) => {
-        if (item.href === to.path) {
-          item.isActive = true;
-        } else {
-          item.isActive = false;
-        }
-      });
-    },
-  },
-};
+      ];
+    } else {
+      navigation.value = [
+        { name: "Home", href: "/", isActive: true },
+        { name: "Sales", href: "/sales", isActive: false },
+        { name: "Projects", href: "#", isActive: false },
+        { name: "Calendar", href: "#", isActive: false },
+        { name: "Cars", href: "/car", isActive: false },
+      ];
+    }
+  }
+);
+
+watch(
+  () => router.currentRoute.value,
+  (to: RouteLocationNormalizedLoaded, _from: RouteLocationNormalizedLoaded) => {
+    navigation.value.forEach((item) => {
+      if (item.href === to.path) {
+        item.isActive = true;
+      } else {
+        item.isActive = false;
+      }
+    });
+  }
+);
 </script>
 <template>
   <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
@@ -56,6 +75,7 @@ export default {
           <!-- Mobile menu button-->
           <DisclosureButton
             class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+            @click="toggleMenu"
           >
             <span class="sr-only">Open main menu</span>
             <MenuIcon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
@@ -99,7 +119,7 @@ export default {
           class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
         >
           <button
-            v-if="auth.isAuthenticated"
+            v-if="authStore.isAuthenticated"
             type="button"
             class="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
           >
@@ -108,7 +128,7 @@ export default {
           </button>
 
           <!-- Profile dropdown -->
-          <Menu as="div" class="ml-3 relative" v-if="auth.isAuthenticated">
+          <Menu as="div" class="ml-3 relative" v-if="authStore.isAuthenticated">
             <div>
               <MenuButton
                 class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
@@ -134,7 +154,7 @@ export default {
               >
                 <MenuItem v-slot="{ active }">
                   <RouterLink
-                    to="#"
+                    to="/profile"
                     :class="[
                       active ? 'bg-gray-100' : '',
                       'block px-4 py-2 text-sm text-gray-700',
@@ -142,7 +162,7 @@ export default {
                     >Your Profile</RouterLink
                   >
                 </MenuItem>
-                <MenuItem v-slot="{ active }">
+                <!-- <MenuItem v-slot="{ active }">
                   <RouterLink
                     to="#"
                     :class="[
@@ -151,16 +171,17 @@ export default {
                     ]"
                     >Settings</RouterLink
                   >
-                </MenuItem>
+                </MenuItem> -->
                 <MenuItem v-slot="{ active }">
-                  <RouterLink
-                    to="#"
+                  <a
+                    @click="authStore.logout"
                     :class="[
                       active ? 'bg-gray-100' : '',
-                      'block px-4 py-2 text-sm text-gray-700',
+                      'block px-4 py-2 text-sm text-gray-700 cursor-pointer',
                     ]"
-                    >Sign out</RouterLink
                   >
+                    Sign out
+                  </a>
                 </MenuItem>
               </MenuItems>
             </transition>

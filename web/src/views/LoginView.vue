@@ -1,38 +1,33 @@
 <script setup lang="ts">
 import { LockClosedIcon } from "@heroicons/vue/solid";
+import { ref } from "vue";
 import { RouterLink } from "vue-router";
+
+import router from "@/router";
 import { useAuthStore } from "@/stores/auth";
+
+const authStore = useAuthStore();
+
+if (authStore.isAuthenticated) {
+  router.push(authStore.returnUrl || "/");
+}
+
+const email = ref("");
+const password = ref("");
+
+async function login(e: Event) {
+  e.preventDefault();
+
+  const auth = useAuthStore();
+
+  if (email.value.trim().length === 0 || password.value.trim().length === 0) {
+    return;
+  }
+
+  await auth.login({ email: email.value, password: password.value });
+}
 </script>
-<script lang="ts">
-export default {
-  data() {
-    return {
-      email: "",
-      password: "",
-    };
-  },
-  mounted() {
-    const auth = useAuthStore();
 
-    if (auth.isAuthenticated) {
-      this.$router.push("/");
-    }
-  },
-  methods: {
-    async login(e: Event) {
-      e.preventDefault();
-
-      const auth = useAuthStore();
-
-      if (this.email.trim().length === 0 || this.password.trim().length === 0) {
-        return;
-      }
-
-      await auth.login({ email: this.email, password: this.password });
-    },
-  },
-};
-</script>
 <template>
   <div
     class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"

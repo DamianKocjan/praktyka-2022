@@ -1,33 +1,25 @@
 //zgubiłeś się?
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
+import { ref } from "vue";
+
+import axios from "@/utils/axios";
+
+// @TODO:
+const sales = ref<any>([]);
+
+async function getData() {
+  try {
+    const response = await axios.get("/sales");
+
+    sales.value = response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+await getData();
 </script>
-<script lang="ts">
-import axios from "../../utils/axios";
-export default {
-  data() {
-    return {
-      sales: [],
-    };
-  },
 
-  methods: {
-    async getData() {
-      try {
-        const response = await axios.get("/sales");
-
-        this.sales = response.data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-  },
-
-  created() {
-    this.getData();
-  },
-};
-</script>
 <template>
   <div class="flex flex-col">
     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">

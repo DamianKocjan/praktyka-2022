@@ -1,66 +1,69 @@
 <script setup lang="ts">
+import { LockClosedIcon } from "@heroicons/vue/solid";
+import { ref } from "vue";
+import { RouterLink } from "vue-router";
+
+import router from "@/router";
 import { useAuthStore } from "@/stores/auth";
+import axios from "@/utils/axios";
+
+const authStore = useAuthStore();
+
+if (authStore.isAuthenticated) {
+  router.push(authStore.returnUrl || "/");
+}
+
+const email = ref("");
+const password = ref("");
+const confirmPassword = ref("");
+const phoneNumber = ref("");
+const firstName = ref("");
+const lastName = ref("");
+const dateOfBirth = ref("");
+
+async function register(e: Event) {
+  e.preventDefault();
+
+  console.log({
+    email: email.value,
+    password: password.value,
+    confirmPassword: confirmPassword.value,
+    phoneNumber: phoneNumber.value,
+    firstName: firstName.value,
+    lastName: lastName.value,
+    dateOfBirth: dateOfBirth.value,
+  });
+
+  if (
+    email.value.trim().length === 0 ||
+    password.value.trim().length === 0 ||
+    confirmPassword.value.trim().length === 0 ||
+    phoneNumber.value.trim().length === 0 ||
+    firstName.value.trim().length === 0 ||
+    lastName.value.trim().length === 0 ||
+    dateOfBirth.value.trim().length === 0 ||
+    password.value !== confirmPassword.value
+  ) {
+    return;
+  }
+
+  try {
+    await axios.post("/auth/register", {
+      email: email,
+      password: password,
+      phoneNumber: phoneNumber,
+      firstName: firstName,
+      lastName: lastName,
+      dateOfBirth: dateOfBirth,
+    });
+
+    router.push("/login");
+  } catch (error) {
+    console.error(error);
+  }
+}
 </script>
-<script lang="ts">
-export default {
-  data() {
-    return {
-      email: "",
-      password: "",
-      confirmPassword: "",
-      phoneNumber: "",
-      firstName: "",
-      lastName: "",
-      dateOfBirth: "",
-    };
-  },
-  mounted() {
-    const auth = useAuthStore();
 
-    if (auth.isAuthenticated) {
-      this.$router.push("/");
-    }
-  },
-  methods: {
-    async register(e: Event) {
-      e.preventDefault();
-
-      const auth = useAuthStore();
-
-      console.log({
-        email: this.email,
-        password: this.password,
-        phoneNumber: this.phoneNumber,
-        firstName: this.firstName,
-        lastName: this.lastName,
-        dateOfBirth: this.dateOfBirth,
-      });
-
-      if (
-        this.email.trim().length === 0 ||
-        this.password.trim().length === 0 ||
-        this.confirmPassword.trim().length === 0 ||
-        this.phoneNumber.trim().length === 0 ||
-        this.firstName.trim().length === 0 ||
-        this.lastName.trim().length === 0 ||
-        this.dateOfBirth.trim().length === 0 ||
-        this.password !== this.confirmPassword
-      ) {
-        return;
-      }
-
-      await auth.register({
-        email: this.email,
-        password: this.password,
-        phoneNumber: this.phoneNumber,
-        firstName: this.firstName,
-        lastName: this.lastName,
-        dateOfBirth: this.dateOfBirth,
-      });
-    },
-  },
-};
-</script>
 <template>
   <div
     class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"

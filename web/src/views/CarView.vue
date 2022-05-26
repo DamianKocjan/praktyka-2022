@@ -37,7 +37,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const callouts = [
   {
     name: "A3 Sportback",
