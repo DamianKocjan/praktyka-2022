@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
+import { RouterLink, type RouteLocationNormalizedLoaded } from "vue-router";
 import {
   Disclosure,
   DisclosureButton,
@@ -11,13 +11,6 @@ import {
 } from "@headlessui/vue";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/vue/outline";
 import { useAuthStore } from "@/stores/auth";
-
-const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Sales", href: "/sales", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-];
 </script>
 <script lang="ts">
 export default {
@@ -25,11 +18,32 @@ export default {
     return {
       auth: useAuthStore(),
       isMenuOpen: false,
+      navigation: [
+        { name: "Home", href: "/", isActive: true },
+        { name: "Sales", href: "/sales", isActive: false },
+        { name: "Projects", href: "#", isActive: false },
+        { name: "Calendar", href: "#", isActive: false },
+        { name: "Cars", href: "/car", isActive: false },
+      ],
     };
   },
   methods: {
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
+    },
+  },
+  watch: {
+    $route(
+      to: RouteLocationNormalizedLoaded,
+      _from: RouteLocationNormalizedLoaded
+    ) {
+      this.navigation.forEach((item) => {
+        if (item.href === to.path) {
+          item.isActive = true;
+        } else {
+          item.isActive = false;
+        }
+      });
     },
   },
 };
@@ -70,12 +84,12 @@ export default {
                 :key="item.name"
                 :to="item.href"
                 :class="[
-                  item.current
+                  item.isActive
                     ? 'bg-gray-900 text-white'
                     : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                   'px-3 py-2 rounded-md text-sm font-medium',
                 ]"
-                :aria-current="item.current ? 'page' : undefined"
+                :aria-current="item.isActive ? 'page' : undefined"
                 >{{ item.name }}</RouterLink
               >
             </div>
@@ -170,12 +184,12 @@ export default {
           as="RouterLink"
           :to="item.href"
           :class="[
-            item.current
+            item.isActive
               ? 'bg-gray-900 text-white'
               : 'text-gray-300 hover:bg-gray-700 hover:text-white',
             'block px-3 py-2 rounded-md text-base font-medium',
           ]"
-          :aria-current="item.current ? 'page' : undefined"
+          :aria-current="item.isActive ? 'page' : undefined"
           >{{ item.name }}</DisclosureButton
         >
       </div>
