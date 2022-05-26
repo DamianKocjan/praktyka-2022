@@ -14,7 +14,7 @@ async function hashPassword(password) {
   const key = await bcrypt({
     password,
     salt,
-    cost: COST_FACTOR,
+    costFactor: COST_FACTOR,
     outputType: "encoded",
   });
 
@@ -28,9 +28,8 @@ async function hashPassword(password) {
  */
 async function verifyPassword(hashedPassword, password) {
   return await bcryptVerify({
-    hashedPassword,
     password,
-    outputType: "boolean",
+    hash: hashedPassword,
   });
 }
 
@@ -40,17 +39,17 @@ async function verifyPassword(hashedPassword, password) {
  * @returns {Promise<any>}
  */
 async function authenticateUser(email, password) {
-  const user = await query("SELECT * FROM user WHERE email = ?", [email]);
+  const [user] = await query("SELECT * FROM user WHERE email = ?", [email]);
 
-  if (!user || !user.hashedPassword) {
+  if (!user || !user.passwordHashed) {
     return new Error("Email not found");
   }
 
-  if (!(await this.verifyPassword(user.hashedPassword, password))) {
+  if (!(await verifyPassword(user.passwordHashed, password))) {
     return new Error("Password is incorrect");
   }
 
-  const costFactorString = user.hashedPassword.split("$")[2];
+  const costFactorString = user.passwordHashed.split("$")[2];
 
   if (!costFactorString) {
     return new Error("Unknown password format.");
@@ -59,14 +58,14 @@ async function authenticateUser(email, password) {
   const costFactor = Number.parseInt(costFactorString, 10);
   if (costFactor !== COST_FACTOR) {
     const improvedHash = await hashPassword(password);
-    await query("UPDATE user SET hashedPassword = ? WHERE id = ?", [
+    await query("UPDATE user SET passwordHashed = ? WHERE id = ?", [
       improvedHash,
       user.id,
     ]);
   }
 
-  // remove hashedPassword from user object, so we don't send it to the client
-  delete user.hashedPassword;
+  // remove passwordHashed from user object, so we don't send it to the client
+  delete user.passwordHashed;
 
   return user;
 }

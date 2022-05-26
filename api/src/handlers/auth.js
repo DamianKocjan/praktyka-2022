@@ -1,15 +1,15 @@
 const jwt = require("jsonwebtoken");
-const { db } = require("../db");
+const { query } = require("../db");
 const { authenticateUser, hashPassword } = require("../services/auth");
 
 async function getRoles(userId) {
   const roles = [];
 
-  const query = await db.query(
-    "SELECT * FROM UserRole WHERE userId = ? LEFT JOIN Role ON UserRole.roleId = Role.id",
+  const results = await query(
+    "SELECT * FROM UserRole ur LEFT JOIN Role r ON ur.roleId = r.id WHERE userId = ?",
     [userId]
-  )
-  query.forEach((role) => roles.push("ROLE_" + role.name.toUpperCase()));
+  );
+  results.forEach((result) => roles.push("ROLE_" + result.name.toUpperCase()));
 
   return roles;
 }
@@ -17,7 +17,6 @@ async function getRoles(userId) {
 module.exports.login = async (req, res, next) => {
   try {
     const user = await authenticateUser(req.body.email, req.body.password);
-    console.log({user});
     const roles = await getRoles(user.id);
 
     const token = jwt.sign({ id: user.id }, process.env.SECRET, {
