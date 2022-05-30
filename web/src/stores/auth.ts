@@ -9,7 +9,7 @@ export const useAuthStore = defineStore({
     user: null,
     token: window.localStorage.getItem("token") || null,
     roles: [] as string[],
-    returnUrl: null,
+    returnUrl: null as string | null,
   }),
   getters: {
     isAuthenticated: (state) => !!state.token,
