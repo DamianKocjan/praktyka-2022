@@ -66,7 +66,6 @@ CREATE TABLE `User` (
     `firstName` varchar(255) NOT NULL,
     `lastName` varchar(255) NOT NULL,
     `dateOfBirth` TIMESTAMP NOT NULL,
-    `addressId` INT NOT NULL,
     `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
@@ -106,6 +105,7 @@ CREATE TABLE `Address` (
     `state` varchar(255) NOT NULL,
     `country` varchar(255) NOT NULL,
     `isSelected` BOOLEAN NOT NULL DEFAULT 1,
+    `userId` INT NOT NULL,
     `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
@@ -158,9 +158,9 @@ ADD
     CONSTRAINT `Order_fk1` FOREIGN KEY (`userId`) REFERENCES `User`(`id`);
 
 ALTER TABLE
-    `User`
+    `Address`
 ADD
-    CONSTRAINT `User_fk0` FOREIGN KEY (`addressId`) REFERENCES `Address`(`id`);
+    CONSTRAINT `Address_fk0` FOREIGN KEY (`userId`) REFERENCES `User`(`id`);
 
 -- ALTER TABLE
 
