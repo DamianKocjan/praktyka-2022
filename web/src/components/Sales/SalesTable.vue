@@ -1,13 +1,23 @@
-//zgubiłeś się?
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { RouterLink } from "vue-router";
 
+import VSpinner from "@/components/VSpinner.vue";
+import VContainer from "@/components/VContainer.vue";
+import VTable from "@/components/Table/VTable.vue";
+import VTHead from "@/components/Table/VTHead.vue";
+import VTh from "@/components/Table/VTh.vue";
+import VTd from "@/components/Table/VTd.vue";
 import axios from "@/utils/axios";
+
+onMounted(async () => {
+  await getSales();
+});
 
 // @TODO:
 const sales = ref<any>([]);
 
-async function getData() {
+async function getSales() {
   try {
     const response = await axios.get("/sales");
 
@@ -16,114 +26,41 @@ async function getData() {
     console.log(error);
   }
 }
-
-await getData();
 </script>
 
 <template>
-  <div class="flex flex-col">
-    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-      <div class="py-4 inline-block min-w-full sm:px-6 lg:px-8">
-        <div class="overflow-hidden">
-          <table class="min-w-full text-center">
-            <thead class="border-b bg-gray-800">
-              <tr>
-                <th
-                  scope="col"
-                  class="text-sm font-medium text-white px-6 py-4"
-                >
-                  #
-                </th>
-                <th
-                  scope="col"
-                  class="text-sm font-medium text-white px-6 py-4"
-                >
-                  Id Klienta
-                </th>
-                <th
-                  scope="col"
-                  class="text-sm font-medium text-white px-6 py-4"
-                >
-                  Status Zamówienia
-                </th>
-                <th
-                  scope="col"
-                  class="text-sm font-medium text-white px-6 py-4"
-                >
-                  Data Zamównienia
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="bg-white border-b">
-                <td
-                  class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                >
-                  1
-                </td>
-                <td
-                  class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                >
-                  1
-                </td>
-                <td
-                  class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
-                >
-                  W trakcie
-                </td>
-                <td
-                  class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
-                >
-                  25.04.2022
-                </td>
-              </tr>
-              <tr
-                class="bg-white border-b"
-                v-for="sale in sales"
-                v-bind:key="sale.id"
-              >
-                <td
-                  class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                >
-                  {{ sale.userId }}
-                </td>
-                <td
-                  class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                >
-                  {{ sale.status }}
-                </td>
-                <td
-                  class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
-                >
-                  {{ new Date(sale.createdAt).toString() }}
-                </td>
-              </tr>
-              <tr class="bg-white border-b">
-                <td
-                  class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                >
-                  3
-                </td>
-                <td
-                  class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                >
-                  3
-                </td>
-                <td
-                  class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
-                >
-                  W trakcie
-                </td>
-                <td
-                  class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
-                >
-                  11.09.2021
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
+  <Suspense>
+    <VContainer>
+      <VTable>
+        <VTHead>
+          <tr>
+            <VTh>Id Klienta</VTh>
+            <VTh>Status Zamówienia</VTh>
+            <VTh>Data Zamównienia</VTh>
+          </tr>
+        </VTHead>
+        <tbody>
+          <tr class="odd:my-4">
+            <VTd>1</VTd>
+            <VTd>W trakcie</VTd>
+            <VTd>25.04.2022</VTd>
+          </tr>
+          <tr class="odd:my-4">
+            <VTd>2</VTd>
+            <VTd>W Trakcie</VTd>
+            <VTd>11.09.2021</VTd>
+          </tr>
+          <tr class="odd:my-4">
+            <VTd>3</VTd>
+            <VTd>Dostarczone</VTd>
+            <VTd>21.11.2015</VTd>
+          </tr>
+        </tbody>
+      </VTable>
+    </VContainer>
+
+    <template #fallback>
+      <VSpinner />
+    </template>
+  </Suspense>
 </template>

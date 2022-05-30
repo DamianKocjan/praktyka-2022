@@ -6,10 +6,10 @@ const button = cva("button", {
   variants: {
     intent: {
       primary: [
-        "bg-blue-500",
+        "bg-gray-800",
         "text-white",
         "border-transparent",
-        "hover:bg-blue-600",
+        "hover:bg-gray-700",
       ],
       secondary: [
         "bg-white",
@@ -23,7 +23,9 @@ const button = cva("button", {
       medium: ["text-base", "py-2", "px-4"],
     },
   },
-  compoundVariants: [{ intent: "primary", size: "medium", class: "uppercase" }],
+  compoundVariants: [
+    { intent: "primary", size: "medium", class: "uppercase font-semibold" },
+  ],
   defaultVariants: {
     intent: "primary",
     size: "medium",

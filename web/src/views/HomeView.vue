@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import VTablesCars from "@/components/CarList/VTablesCars.vue";
-import VTableSale from "@/components/CarList/VTableSale.vue";
+import VehicleTable from "@/components/Vehicle/VehicleTable.vue";
+import VContainer from "@/components/VContainer.vue";
 </script>
 
 <template>
   <main>
-    <VTablesCars></VTablesCars>
-    <VTableSale></VTableSale>
+    <VContainer>
+      <VehicleTable />
+    </VContainer>
   </main>
 </template>
