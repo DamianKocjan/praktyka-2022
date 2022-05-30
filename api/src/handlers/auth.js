@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
-const { query } = require("../db");
-const { authenticateUser, hashPassword } = require("../services/auth");
+const { query, getOneOr404 } = require("../db");
+const { authenticateUser, hashPassword } = require("../utils/auth");
 
 async function getRoles(userId) {
   const roles = [];
@@ -17,6 +17,8 @@ async function getRoles(userId) {
 // @TODO: you can login without creating account
 module.exports.login = async (req, res, next) => {
   try {
+    await getOneOr404("SELECT * FROM user WHERE email = ?", [req.body.email]);
+
     const user = await authenticateUser(req.body.email, req.body.password);
     const roles = await getRoles(user.id);
 
@@ -67,12 +69,8 @@ module.exports.me = async (req, res, next) => {
   try {
     const { userId } = req;
 
-    const [user] = await query("SELECT * FROM user WHERE id = ?", [userId]);
+    const user = await getOneOr404("SELECT * FROM user WHERE id = ?", [userId]);
     const roles = await getRoles(user.id);
-
-    if (!user) {
-      throw new Error("User not found");
-    }
 
     delete user.passwordHashed;
 

@@ -1,4 +1,4 @@
-const { query } = require("../db");
+const { query, getOneOr404 } = require("../db");
 
 module.exports.getAll = async (_req, res, next) => {
   try {
@@ -15,7 +15,7 @@ module.exports.getAll = async (_req, res, next) => {
 
 module.exports.get = async (req, res, next) => {
   try {
-    const [vehicle] = await query("SELECT * FROM vehicle WHERE id = ?", [
+    const vehicle = await getOneOr404("SELECT * FROM vehicle WHERE id = ?", [
       req.params.id,
     ]);
 
@@ -69,6 +69,8 @@ module.exports.create = async (req, res, next) => {
 
 module.exports.update = async (req, res, next) => {
   try {
+    await getOneOr404("SELECT * FROM vehicle WHERE id = ?", [req.params.id]);
+
     const fields = Object.keys(req.body);
     const data = fields.map((field) => `${field} = ?`);
     const values = fields.map((field) => req.body[field]);
@@ -92,6 +94,7 @@ module.exports.update = async (req, res, next) => {
 
 module.exports.delete = async (req, res, next) => {
   try {
+    await getOneOr404("SELECT * FROM vehicle WHERE id = ?", [req.params.id]);
     await query("DELETE FROM vehicle WHERE id = ?", [req.params.id]);
 
     res.json({

@@ -1,3 +1,4 @@
+const { createError } = require("../utils/error");
 const mysql = require("mysql2/promise");
 
 const connection = mysql.createConnection({
@@ -18,4 +19,18 @@ module.exports.connection = connection;
 module.exports.query = async (query, params) => {
   const [rows] = await (await connection).query(query, params);
   return !rows ? [] : rows;
+};
+
+/** Get query result or throw error
+ * @param {string} query
+ * @param {(string | number | Date)[]} params
+ * @returns {Promise<any | Error>}
+ */
+module.exports.getOneOr404 = async (query, params) => {
+  const [rows] = await (await connection).query(query, params);
+
+  if (!rows || rows.length === 0) {
+    throw createError("Not found", 404);
+  }
+  return rows[0];
 };

@@ -1,5 +1,5 @@
 const { query } = require("../db");
-const { hashPassword } = require("../services/auth");
+const { createError } = require("../utils/error");
 
 module.exports.getAll = async (_req, res, next) => {
   try {
@@ -35,35 +35,35 @@ module.exports.get = async (req, res, next) => {
   }
 };
 
-module.exports.create = async (req, res, next) => {
-  try {
-    const password = await hashPassword(req.body.password);
+// module.exports.create = async (req, res, next) => {
+//   try {
+//     const password = await hashPassword(req.body.password);
 
-    const data = [
-      req.body.userId,
-      req.body.email,
-      password,
-      req.body.phoneNumber,
-      req.body.firstName,
-      req.body.lastName,
-      req.body.dateOfBirth,
-    ];
+//     const data = [
+//       req.body.userId,
+//       req.body.email,
+//       password,
+//       req.body.phoneNumber,
+//       req.body.firstName,
+//       req.body.lastName,
+//       req.body.dateOfBirth,
+//     ];
 
-    const { insertId } = await query(
-      "INSERT INTO user (`userId`, `email`, `passwordHashed`, `phoneNumber`, `firstName`, `lastName`, `dateOfBirth`) VALUES (?,?,?,?,?,?,?)",
-      data
-    );
-    const [user] = await query("SELECT * FROM user WHERE id = ?", [insertId]);
-    delete user.passwordHashed;
+//     const { insertId } = await query(
+//       "INSERT INTO user (`userId`, `email`, `passwordHashed`, `phoneNumber`, `firstName`, `lastName`, `dateOfBirth`) VALUES (?,?,?,?,?,?,?)",
+//       data
+//     );
+//     const [user] = await query("SELECT * FROM user WHERE id = ?", [insertId]);
+//     delete user.passwordHashed;
 
-    res.json({
-      data: user,
-    });
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-};
+//     res.json({
+//       data: user,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     next(error);
+//   }
+// };
 
 module.exports.update = async (req, res, next) => {
   try {

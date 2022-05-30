@@ -1,9 +1,11 @@
-const { query } = require("../db");
+const { query, getOneOr404 } = require("../db");
 
-module.exports.getAll = async (_req, res, next) => {
+module.exports.getAll = async (req, res, next) => {
   try {
-    // TODO: filter by userId from request
-    const orders = await query("SELECT * FROM order");
+    const { userId } = req;
+    const orders = await query("SELECT * FROM order WHERE userId = ?", [
+      userId,
+    ]);
 
     res.json({
       data: orders,
@@ -16,10 +18,11 @@ module.exports.getAll = async (_req, res, next) => {
 
 module.exports.get = async (req, res, next) => {
   try {
-    // TODO: filter by userId from request
-    const [order] = await query("SELECT * FROM order WHERE id = ?", [
-      req.params.id,
-    ]);
+    const { userId } = req;
+    const order = await getOneOr404(
+      "SELECT * FROM order WHERE id = ? AND userId",
+      [req.params.id, userId]
+    );
 
     res.json({
       data: order,
@@ -32,9 +35,10 @@ module.exports.get = async (req, res, next) => {
 
 module.exports.create = async (req, res, next) => {
   try {
+    const {userId} = req;
     const data = [
       req.body.saleId,
-      req.body.userId, // TODO: get userId from request
+      userId,
       new Date(),
       "pending",
     ];
@@ -56,7 +60,13 @@ module.exports.create = async (req, res, next) => {
 
 module.exports.update = async (req, res, next) => {
   try {
-    // TODO: prevent from updating by unathorized users
+    const { userId } = req;
+
+    await getOneOr404("SELECT * FROM order WHERE id = ? AND userId = ?", [
+      req.params.id,
+      userId,
+    ]);
+
     const fields = Object.keys(req.body);
     const data = fields.map((field) => `${field} = ?`);
     const values = fields.map((field) => req.body[field]);
