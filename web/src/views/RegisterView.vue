@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { LockClosedIcon } from "@heroicons/vue/solid";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
 
 import router from "@/router";
@@ -9,9 +9,11 @@ import axios from "@/utils/axios";
 
 const authStore = useAuthStore();
 
-if (authStore.isAuthenticated) {
-  router.push(authStore.returnUrl || "/");
-}
+onMounted(() => {
+  if (authStore.isAuthenticated) {
+    router.push(authStore.returnUrl || "/");
+  }
+});
 
 const email = ref("");
 const password = ref("");
@@ -24,27 +26,35 @@ const dateOfBirth = ref("");
 async function register(e: Event) {
   e.preventDefault();
 
+  const emailVal = email.value.trim();
+  const passwordVal = password.value.trim();
+  const confirmPasswordVal = confirmPassword.value.trim();
+  const phoneNumberVal = phoneNumber.value.trim();
+  const firstNameVal = firstName.value.trim();
+  const lastNameVal = lastName.value.trim();
+  const dateOfBirthVal = dateOfBirth.value.trim();
+
   if (
-    email.value.trim().length === 0 ||
-    password.value.trim().length === 0 ||
-    confirmPassword.value.trim().length === 0 ||
-    phoneNumber.value.trim().length === 0 ||
-    firstName.value.trim().length === 0 ||
-    lastName.value.trim().length === 0 ||
-    dateOfBirth.value.trim().length === 0 ||
-    password.value !== confirmPassword.value
+    emailVal.length === 0 ||
+    passwordVal.length === 0 ||
+    confirmPasswordVal.length === 0 ||
+    phoneNumberVal.length === 0 ||
+    firstNameVal.length === 0 ||
+    lastNameVal.length === 0 ||
+    dateOfBirthVal.length === 0 ||
+    passwordVal !== confirmPasswordVal
   ) {
     return;
   }
 
   try {
     await axios.post("/auth/register", {
-      email: email,
-      password: password,
-      phoneNumber: phoneNumber,
-      firstName: firstName,
-      lastName: lastName,
-      dateOfBirth: dateOfBirth,
+      email: emailVal,
+      password: passwordVal,
+      phoneNumber: phoneNumberVal,
+      firstName: firstNameVal,
+      lastName: lastNameVal,
+      dateOfBirth: dateOfBirthVal,
     });
 
     router.push("/login");

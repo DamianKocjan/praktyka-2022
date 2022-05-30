@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { LockClosedIcon } from "@heroicons/vue/solid";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
 
 import router from "@/router";
@@ -8,9 +8,11 @@ import { useAuthStore } from "@/stores/auth";
 
 const authStore = useAuthStore();
 
-if (authStore.isAuthenticated) {
-  router.push(authStore.returnUrl || "/");
-}
+onMounted(() => {
+  if (authStore.isAuthenticated) {
+    router.push(authStore.returnUrl || "/");
+  }
+});
 
 const email = ref("");
 const password = ref("");
@@ -20,11 +22,18 @@ async function login(e: Event) {
 
   const auth = useAuthStore();
 
-  if (email.value.trim().length === 0 || password.value.trim().length === 0) {
+  const emailVal = email.value.trim();
+  const passwordVal = password.value.trim();
+
+  if (emailVal.length === 0 || passwordVal.length === 0) {
     return;
   }
 
-  await auth.login({ email: email.value, password: password.value });
+  try {
+    await auth.login({ email: emailVal, password: passwordVal });
+  } catch (error) {
+    console.error(error);
+  }
 }
 </script>
 
