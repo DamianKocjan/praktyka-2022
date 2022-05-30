@@ -9,7 +9,9 @@ async function fetchSales() {
 </script>
 
 <template>
-  <Suspense>
-    <SalesTable></SalesTable>
-  </Suspense>
+  <main>
+    <Suspense>
+      <SalesTable></SalesTable>
+    </Suspense>
+  </main>
 </template>

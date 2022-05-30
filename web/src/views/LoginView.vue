@@ -38,7 +38,7 @@ async function login(e: Event) {
 </script>
 
 <template>
-  <div
+  <main
     class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
   >
     <div class="max-w-md w-full space-y-8">
@@ -141,5 +141,5 @@ async function login(e: Event) {
         </div>
       </form>
     </div>
-  </div>
+  </main>
 </template>
