@@ -2,14 +2,22 @@ import { defineStore } from "pinia";
 
 import router from "@/router";
 import axios from "@/utils/axios";
+import type { User } from "@/types";
+
+interface AuthState {
+  user: User | null;
+  token: string | null;
+  roles: string[];
+  returnUrl: string | null;
+}
 
 export const useAuthStore = defineStore({
   id: "auth",
-  state: () => ({
+  state: (): AuthState => ({
     user: null,
     token: window.localStorage.getItem("token") || null,
-    roles: [] as string[],
-    returnUrl: null as string | null,
+    roles: [],
+    returnUrl: null,
   }),
   getters: {
     isAuthenticated: (state) => !!state.token,

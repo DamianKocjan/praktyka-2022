@@ -139,7 +139,6 @@ export interface User {
   firstName: string;
   lastName: string;
   dateOfBirth: Date;
-  addressId: string;
   createdAt: Date;
   updatedAt: Date;
 }
