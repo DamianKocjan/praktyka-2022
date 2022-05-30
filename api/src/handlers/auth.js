@@ -51,9 +51,7 @@ module.exports.register = async (req, res, next) => {
       "INSERT INTO user (`email`, `passwordHashed`, `phoneNumber`, `firstName`, `lastName`, `dateOfBirth`) VALUES (?,?,?,?,?,?)",
       data
     );
-    const [user] = await query("SELECT * FROM user WHERE id = ?", [
-      insertId,
-    ]);
+    const [user] = await query("SELECT * FROM user WHERE id = ?", [insertId]);
     delete user.passwordHashed;
 
     res.json({

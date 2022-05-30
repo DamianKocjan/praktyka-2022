@@ -47,11 +47,10 @@ module.exports.create = async (req, res, next) => {
       req.body.firstName,
       req.body.lastName,
       req.body.dateOfBirth,
-      req.body.addressId,
     ];
 
     const { insertId } = await query(
-      "INSERT INTO user (`userId`, `email`, `passwordHashed`, `phoneNumber`, `firstName`, `lastName`, `dateOfBirth`, `addressId`) VALUES (?,?,?,?,?,?,?,?)",
+      "INSERT INTO user (`userId`, `email`, `passwordHashed`, `phoneNumber`, `firstName`, `lastName`, `dateOfBirth`) VALUES (?,?,?,?,?,?,?)",
       data
     );
     const [user] = await query("SELECT * FROM user WHERE id = ?", [insertId]);

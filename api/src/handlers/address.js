@@ -41,10 +41,11 @@ module.exports.create = async (req, res, next) => {
       req.body.state,
       req.body.country,
       req.body.isSelected,
+      req.body.userId,
     ];
 
     const { insertId } = await query(
-      "INSERT INTO address (`addressId`, `street`, `city`, `zip`, `state`, `country`, `isSelected`) VALUES (?,?,?,?,?,?,?)",
+      "INSERT INTO address (`addressId`, `street`, `city`, `zip`, `state`, `country`, `isSelected`, `userId`) VALUES (?,?,?,?,?,?,?,?)",
       data
     );
     const [address] = await query("SELECT * FROM address WHERE id = ?", [
