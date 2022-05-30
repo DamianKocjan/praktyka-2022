@@ -1,16 +1,21 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 import router from "@/router";
 import VContainer from "@/components/VContainer.vue";
+import VSpinner from "@/components/VSpinner.vue";
 import { useAuthStore } from "@/stores/auth";
 import axios from "@/utils/axios";
 
 const authStore = useAuthStore();
 
-if (authStore.isAuthenticated) {
-  router.push(authStore.returnUrl || "/");
-}
+onMounted(async () => {
+  if (authStore.isAuthenticated) {
+    router.push(authStore.returnUrl || "/");
+  }
+
+  await fetchUser();
+});
 
 const isEdited = ref(false);
 const user = ref({
@@ -28,13 +33,11 @@ async function fetchUser() {
 
   user.value = result.data.user;
 }
-
-await fetchUser();
 </script>
 
 <template>
-  <VContainer>
-    <Suspense>
+  <Suspense>
+    <VContainer>
       <div class="hidden sm:block" aria-hidden="true">
         <div class="py-5">
           <div class="border-t border-gray-200" />
@@ -366,6 +369,10 @@ await fetchUser();
           </div>
         </div>
       </div>
-    </Suspense>
-  </VContainer>
+    </VContainer>
+
+    <template #fallback>
+      <VSpinner />
+    </template>
+  </Suspense>
 </template>
