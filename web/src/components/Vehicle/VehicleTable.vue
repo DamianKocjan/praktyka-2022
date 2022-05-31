@@ -9,7 +9,8 @@ import VTHead from "@/components/Table/VTHead.vue";
 import VTh from "@/components/Table/VTh.vue";
 import VTd from "@/components/Table/VTd.vue";
 import axios from "@/utils/axios";
-import type { VehicleData } from "@/types";
+import type { VehicleData, VehicleAllResponse } from "@/types";
+import { formatNumber } from "@/utils/formaters";
 
 onMounted(async () => {
   await getVehicles();
@@ -18,7 +19,7 @@ onMounted(async () => {
 const vehicles = ref<VehicleData[]>([]);
 
 async function getVehicles() {
-  const { data: response } = await axios.get("/vehicles");
+  const { data: response } = await axios.get<VehicleAllResponse>("/vehicles");
 
   vehicles.value = response.data;
 }
@@ -47,12 +48,12 @@ async function getVehicles() {
           <VTd>{{ vehicle.manufacturerName }}</VTd>
           <VTd>{{ vehicle.model }}</VTd>
           <VTd>{{ vehicle.condition }}</VTd>
-          <VTd>{{ vehicle.productionYear }}</VTd>
-          <VTd>{{ vehicle.mileage }}km</VTd>
+          <VTd>{{ new Date(vehicle.productionYear).getFullYear() }}</VTd>
+          <VTd>{{ formatNumber(vehicle.mileage) }}km</VTd>
           <VTd>{{ vehicle.doorsNumber }}</VTd>
           <VTd>{{ vehicle.numberOfSeats }}</VTd>
           <VTd>{{ vehicle.color }} {{ vehicle.lacquer }}</VTd>
-          <VTd>{{ vehicle.enginePower }} KM</VTd>
+          <VTd>{{ vehicle.enginePower }} HP</VTd>
           <VTd>{{ vehicle.fuelType }}</VTd>
           <VTd>
             <RouterLink to="/sales">

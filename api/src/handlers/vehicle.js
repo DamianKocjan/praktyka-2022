@@ -2,7 +2,7 @@ const { query, getOneOr404 } = require("../db");
 
 module.exports.getAll = async (_req, res, next) => {
   try {
-    const vehicles = await query("SELECT * FROM vehicle");
+    const vehicles = await query("SELECT v.id, v.manufacturerId, v.name, v.model, v.type, v.description, v.condition, v.productionYear, v.mileage, v.doorsNumber, v.numberOfSeats, v.color, v.lacquer, v.enginePower, v.engineCapacity, v.fuelType, v.transmission, v.testDriveable, v.VIN, v.createdAt, v.updatedAt, m.name as manufacturerName, m.description as manufacturerDescription, m.yearOfEstablishment as manufacturerYearOfEstablishment, m.createdAt as manufacturerCreatedAt, m.updatedAt as manufacturerUpdatedAt FROM vehicle v LEFT JOIN manufacturer m ON v.manufacturerId = m.id");
 
     res.json({
       data: vehicles,
@@ -15,7 +15,7 @@ module.exports.getAll = async (_req, res, next) => {
 
 module.exports.get = async (req, res, next) => {
   try {
-    const vehicle = await getOneOr404("SELECT * FROM vehicle WHERE id = ?", [
+    const vehicle = await query("SELECT v.id, v.manufacturerId, v.name, v.type, v.description, v.condition, v.productionYear, v.mileage, v.doorsNumber, v.numberOfSeats, v.color, v.lacquer, v.enginePower, v.engineCapacity, v.fuelType, v.transmission, v.testDriveable, v.VIN, v.createdAt, v.updatedAt, m.name as manufacturerName, m.description as manufacturerDescription, m.yearOfEstablishment as manufacturerYearOfEstablishment, m.createdAt as manufacturerCreatedAt, m.updatedAt as manufacturerUpdatedAt FROM vehicle v LEFT JOIN manufacturer m ON v.manufacturerId = m.id WHERE v.id = ?", [
       req.params.id,
     ]);
 
@@ -54,7 +54,7 @@ module.exports.create = async (req, res, next) => {
       "INSERT INTO vehicle (`manufacturerId`, `name`, `model`, `type`, `description`, `condition`, `productionYear`, `mileage`, `doorsNumber`, `numberOfSeats`, `color`, `lacquer`, `enginePower`, `engineCapacity`, `fuelType`, `testDriveable`, `VIN`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
       data
     );
-    const [vehicle] = await query("SELECT * FROM vehicle WHERE id = ?", [
+    const [vehicle] = await query("SELECT v.id, v.manufacturerId, v.name, v.type, v.description, v.condition, v.productionYear, v.mileage, v.doorsNumber, v.numberOfSeats, v.color, v.lacquer, v.enginePower, v.engineCapacity, v.fuelType, v.transmission, v.testDriveable, v.VIN, v.createdAt, v.updatedAt, m.name as manufacturerName, m.description as manufacturerDescription, m.yearOfEstablishment as manufacturerYearOfEstablishment, m.createdAt as manufacturerCreatedAt, m.updatedAt as manufacturerUpdatedAt FROM vehicle v LEFT JOIN manufacturer m ON v.manufacturerId = m.id WHERE v.id = ?", [
       insertId,
     ]);
 
@@ -79,7 +79,7 @@ module.exports.update = async (req, res, next) => {
       ...values,
       req.params.id,
     ]);
-    const [vehicle] = await query("SELECT * FROM vehicle WHERE id = ?", [
+    const [vehicle] = await query("SELECT v.id, v.manufacturerId, v.name, v.type, v.description, v.condition, v.productionYear, v.mileage, v.doorsNumber, v.numberOfSeats, v.color, v.lacquer, v.enginePower, v.engineCapacity, v.fuelType, v.transmission, v.testDriveable, v.VIN, v.createdAt, v.updatedAt, m.name as manufacturerName, m.description as manufacturerDescription, m.yearOfEstablishment as manufacturerYearOfEstablishment, m.createdAt as manufacturerCreatedAt, m.updatedAt as manufacturerUpdatedAt FROM vehicle v LEFT JOIN manufacturer m ON v.manufacturerId = m.id WHERE v.id = ?", [
       req.params.id,
     ]);
 

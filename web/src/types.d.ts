@@ -22,28 +22,7 @@ export interface Vehicle {
   updatedAt: Date;
 }
 
-export interface VehicleData {
-  id: string;
-  name: string;
-  model: string;
-  type: string;
-  description: string;
-  condition: string;
-  productionYear: number;
-  mileage: number;
-  doorsNumber: number;
-  numberOfSeats: number;
-  color: string;
-  lacquer: string;
-  enginePower: number;
-  engineCapacity: number;
-  fuelType: string;
-  transmission: string;
-  testDriveable: boolean;
-  VIN: string;
-  createdAt: Date;
-  updatedAt: Date;
-
+export interface VehicleData extends Vehicle {
   manufacturerId: string;
   manufacturerName: string;
   manufacturerDescription: string;
@@ -69,9 +48,9 @@ export type VehicleCreateRequest = Omit<
 
 export type VehicleCreateResponse = VehicleResponse;
 
-export type VehicleUpdateRequest = Partial<
-  Omit<Vehicle, "id", "createdAt", "updatedAt">
->;
+export type VehicleUpdateRequest = {
+  data: Partial<Omit<Vehicle, "id", "createdAt", "updatedAt">>;
+};
 
 export type VehicleUpdateResponse = VehicleResponse;
 
@@ -84,6 +63,28 @@ export interface Service {
   description: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+interface ServiceData extends Service {
+  vehicleName: string;
+  vehicleModel: string;
+  vehicleType: string;
+  vehicleDescription: string;
+  vehicleCondition: string;
+  vehicleProductionYear: Date;
+  vehicleMileage: string;
+  vehicleDoorsNumber: number;
+  vehicleNumberOfSeats: number;
+  vehicleColor: string;
+  vehicleLacquer: string;
+  vehicleEnginePower: string;
+  vehicleEngineCapacity: string;
+  vehicleFuelType: string;
+  vehicleTransmission: string;
+  vehicleTestDriveable: number;
+  vehicleVIN: string;
+  vehicleCreatedAt: Date;
+  vehicleUpdatedAt: Date;
 }
 
 export interface ServiceAllResponse {
@@ -104,10 +105,9 @@ export type ServiceCreateRequest = Omit<
 
 export type ServiceCreateResponse = ServiceResponse;
 
-export type ServiceUpdateRequest = Partial<
-  Omit<Service, "id", "userId", "createdAt", "updatedAt">
->;
-
+export type ServiceUpdateRequest = {
+  data: Partial<Omit<Service, "id", "userId", "createdAt", "updatedAt">>;
+};
 export type ServiceUpdateResponse = ServiceResponse;
 
 export interface Sale {
@@ -131,6 +131,46 @@ export interface Order {
   updatedAt: Date;
 }
 
+interface OrderData extends Order {
+  saleVehicleId: number;
+  saleCost: number;
+  saleStatus: string;
+  saleGuarantee: Date;
+  saleCreatedAt: Date;
+  saleUpdatedAt: Date;
+  saleVehicleName: string;
+  saleVehicleModel: string;
+  saleVehicleType: string;
+  saleVehicleDescription: string;
+  saleVehicleCondition: string;
+  saleVehicleProductionYear: Date;
+  saleVehicleMileage: string;
+  saleVehicleDoorsNumber: number;
+  saleVehicleNumberOfSeats: number;
+  saleVehicleColor: string;
+  saleVehicleLacquer: string;
+  saleVehicleEnginePower: string;
+  saleVehicleEngineCapacity: string;
+  saleVehicleFuelType: string;
+  saleVehicleTransmission: string;
+  saleVehicleTestDriveable: number;
+  saleVehicleVIN: string;
+  saleVehicleCreatedAt: Date;
+  saleVehicleUpdatedAt: Date;
+  saleVehicleManufacturerName: string;
+  saleVehicleManufacturerDescription: string;
+  saleVehicleManufacturerYearOfEstablishment: Date;
+  saleVehicleManufacturerCreatedAt: Date;
+  saleVehicleManufacturerUpdatedAt: Date;
+}
+
+export interface OrderAllResponse {
+  data: OrderData[];
+}
+export interface OrderResponse {
+  data: OrderData;
+}
+
 export interface User {
   id: string;
   email: string;
@@ -152,7 +192,9 @@ export interface RegisterRequest {
   dateOfBirth: string;
 }
 
-export type RegisterResponse = Omit<User, "passwordHashed">;
+export type RegisterResponse = {
+  data: Omit<User, "passwordHashed">;
+};
 
 export interface Manufacturer {
   id: string;
@@ -161,6 +203,16 @@ export interface Manufacturer {
   yearOfEstablishment: Date;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface ManufacturersResponse {
+  data: Manufacturer[];
+}
+
+export interface ManufacturerCreate {
+  name: string;
+  description: string;
+  yearOfEstablishment: string;
 }
 
 export interface Address {

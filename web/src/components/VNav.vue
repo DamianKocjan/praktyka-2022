@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { RouterLink, type RouteLocationNormalizedLoaded } from "vue-router";
 import {
   Disclosure,
   DisclosureButton,
@@ -11,6 +10,7 @@ import {
 } from "@headlessui/vue";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/vue/outline";
 import { ref, watch } from "vue";
+import { RouterLink, type RouteLocationNormalizedLoaded } from "vue-router";
 
 import router from "@/router";
 import { useAuthStore } from "@/stores/auth";
@@ -110,8 +110,9 @@ watch(
                   'px-3 py-2 rounded-md text-sm font-medium',
                 ]"
                 :aria-current="item.isActive ? 'page' : undefined"
-                >{{ item.name }}</RouterLink
               >
+                {{ item.name }}
+              </RouterLink>
             </div>
           </div>
         </div>
@@ -159,19 +160,32 @@ watch(
                       active ? 'bg-gray-100' : '',
                       'block px-4 py-2 text-sm text-gray-700',
                     ]"
-                    >Your Profile</RouterLink
                   >
+                    Mój profil
+                  </RouterLink>
                 </MenuItem>
-                <!-- <MenuItem v-slot="{ active }">
+                <MenuItem v-slot="{ active }">
                   <RouterLink
-                    to="#"
+                    to="/orders"
                     :class="[
                       active ? 'bg-gray-100' : '',
                       'block px-4 py-2 text-sm text-gray-700',
                     ]"
-                    >Settings</RouterLink
                   >
-                </MenuItem> -->
+                    Moje zamówienia
+                  </RouterLink>
+                </MenuItem>
+                <MenuItem v-slot="{ active }">
+                  <RouterLink
+                    to="/in-service"
+                    :class="[
+                      active ? 'bg-gray-100' : '',
+                      'block px-4 py-2 text-sm text-gray-700',
+                    ]"
+                  >
+                    W serwisie
+                  </RouterLink>
+                </MenuItem>
                 <MenuItem v-slot="{ active }">
                   <a
                     @click="authStore.logout"
@@ -180,7 +194,7 @@ watch(
                       'block px-4 py-2 text-sm text-gray-700 cursor-pointer',
                     ]"
                   >
-                    Sign out
+                    Wyloguj się
                   </a>
                 </MenuItem>
               </MenuItems>
@@ -190,8 +204,9 @@ watch(
             <RouterLink
               to="/login"
               class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
-              >Zaloguj się</RouterLink
             >
+              Zaloguj się
+            </RouterLink>
           </div>
         </div>
       </div>
@@ -211,8 +226,9 @@ watch(
             'block px-3 py-2 rounded-md text-base font-medium',
           ]"
           :aria-current="item.isActive ? 'page' : undefined"
-          >{{ item.name }}</DisclosureButton
         >
+          {{ item.name }}
+        </DisclosureButton>
       </div>
     </DisclosurePanel>
   </Disclosure>
