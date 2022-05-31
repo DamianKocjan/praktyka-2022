@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 module.exports = {
-  content: ["./src/**/*.{html,js,vue}", "./index.html"],
+  content: ["./src/**/*.{html,js,vue,ts}", "./index.html"],
   theme: {
     extend: {},
   },

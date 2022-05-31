@@ -121,6 +121,40 @@ export interface Sale {
   updatedAt: Date;
 }
 
+interface SaleData extends Sale {
+  vehicleName: string;
+  vehicleModel: string;
+  vehicleType: string;
+  vehicleDescription: string;
+  vehicleCondition: string;
+  vehicleProductionYear: Date;
+  vehicleMileage: string;
+  vehicleDoorsNumber: number;
+  vehicleNumberOfSeats: number;
+  vehicleColor: string;
+  vehicleLacquer: string;
+  vehicleEnginePower: string;
+  vehicleEngineCapacity: string;
+  vehicleFuelType: string;
+  vehicleTransmission: string;
+  vehicleTestDriveable: number;
+  vehicleVIN: string;
+  vehicleCreatedAt: Date;
+  vehicleUpdatedAt: Date;
+  vehicleManufacturerName: string;
+  vehicleManufacturerDescription: string;
+  vehicleManufacturerYearOfEstablishment: Date;
+  vehicleManufacturerCreatedAt: Date;
+  vehicleManufacturerUpdatedAt: Date;
+}
+
+export interface SaleAllResponse {
+  data: SaleData[];
+}
+export interface SaleResponse {
+  data: SaleData;
+}
+
 export interface Order {
   id: string;
   saleId: string;

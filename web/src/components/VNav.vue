@@ -22,9 +22,6 @@ const isMenuOpen = ref(false);
 const navigation = ref([
   { name: "Home", href: "/", isActive: true },
   { name: "Sales", href: "/sales", isActive: false },
-  { name: "Projects", href: "#", isActive: false },
-  { name: "Calendar", href: "#", isActive: false },
-  { name: "Cars", href: "/car", isActive: false },
 ]);
 
 function toggleMenu() {
@@ -38,17 +35,11 @@ watch(
       navigation.value = [
         { name: "Home", href: "/", isActive: true },
         { name: "Sales", href: "/sales", isActive: false },
-        { name: "Projects", href: "#", isActive: false },
-        { name: "Calendar", href: "#", isActive: false },
-        { name: "Cars", href: "/car", isActive: false },
       ];
     } else {
       navigation.value = [
         { name: "Home", href: "/", isActive: true },
         { name: "Sales", href: "/sales", isActive: false },
-        { name: "Projects", href: "#", isActive: false },
-        { name: "Calendar", href: "#", isActive: false },
-        { name: "Cars", href: "/car", isActive: false },
       ];
     }
   }

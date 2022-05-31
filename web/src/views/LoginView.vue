@@ -64,7 +64,7 @@ async function login(e: Event) {
               autocomplete="email"
               required="true"
               v-model="email"
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm"
               placeholder="Email"
             />
           </div>
@@ -77,7 +77,7 @@ async function login(e: Event) {
               autocomplete="current-password"
               required="true"
               v-model="password"
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm"
               placeholder="Hasło"
             />
           </div>
@@ -89,7 +89,7 @@ async function login(e: Event) {
               id="remember-me"
               name="remember-me"
               type="checkbox"
-              class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+              class="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
             />
             <label for="remember-me" class="ml-2 block text-sm text-gray-900">
               Zapamiętaj mnie
@@ -99,7 +99,7 @@ async function login(e: Event) {
           <div class="text-sm">
             <RouterLink
               to="#"
-              class="font-medium text-indigo-600 hover:text-indigo-500"
+              class="font-medium text-gray-600 hover:text-gray-500"
             >
               Zapomniałeś hasła?
             </RouterLink>
@@ -110,11 +110,11 @@ async function login(e: Event) {
           <button
             type="submit"
             @click="login"
-            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800"
           >
             <span class="absolute left-0 inset-y-0 flex items-center pl-3">
               <LockClosedIcon
-                class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                class="h-5 w-5 text-gray-500 group-hover:text-gray-400"
                 aria-hidden="true"
               />
             </span>
@@ -133,7 +133,7 @@ async function login(e: Event) {
           <div class="text-sm">
             <RouterLink
               to="/register"
-              class="font-medium text-indigo-600 hover:text-indigo-500"
+              class="font-medium text-gray-800 hover:text-gray-800"
             >
               Zarejestruj się
             </RouterLink>

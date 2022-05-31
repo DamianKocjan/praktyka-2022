@@ -46,12 +46,7 @@ const router = createRouter({
     {
       path: "/sales",
       name: "sales",
-      component: () => import("@/views/sales/SalesView.vue"),
-    },
-    {
-      path: "/car",
-      name: "car",
-      component: () => import("@/views/CarView.vue"),
+      component: () => import("@/views/Sales/SalesView.vue"),
     },
     {
       path: "/profile",
@@ -67,6 +62,16 @@ const router = createRouter({
       path: "/in-service",
       name: "in service",
       component: () => import("@/views/InServiceView.vue"),
+    },
+    {
+      path: "/add-service",
+      name: "add service",
+      component: () => import("@/views/AddServiceView.vue"),
+    },
+    {
+      path: "/test",
+      name: "test",
+      component: () => import("@/views/TestView.vue"),
     },
   ],
 });
