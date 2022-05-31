@@ -25,7 +25,6 @@ app.use(function (req, res, next) {
 app.use(require("./middlewares/error"));
 
 app.use("", require("./routes"));
-app.use("/api/v1/addresses", require("./routes/address"));
 app.use("/api/v1/auth", require("./routes/auth"));
 app.use("/api/v1/manufacturers", require("./routes/manufacturer"));
 app.use("/api/v1/orders", require("./routes/order"));

@@ -45,9 +45,8 @@
 </template>
 
 <script setup lang="ts">
-import VContainer from "@/components/VContainer.vue";
-import HeroSection from "@/components/Home/HeroSection.vue";
 import VehicleTable from "@/components/Vehicle/VehicleTable.vue";
+
 const callouts = [
   {
     name: "Audi A3 Sportback",

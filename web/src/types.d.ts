@@ -208,16 +208,40 @@ export interface OrderResponse {
 export interface User {
   id: string;
   email: string;
-  passwordHashed: string;
   phoneNumber: string;
   firstName: string;
   lastName: string;
   dateOfBirth: Date;
+  street: string;
+  city: string;
+  zip: string;
+  state: string;
+  country: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface RegisterRequest {
+export interface MeResponse {
+  data: {
+    user: User;
+    roles: string[];
+  };
+}
+
+export interface LoginData {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  data: {
+    token: string;
+    user: User;
+    roles: string[];
+  };
+}
+
+export interface RegisterData {
   email: string;
   password: string;
   phoneNumber: string;
@@ -247,16 +271,4 @@ export interface ManufacturerCreate {
   name: string;
   description: string;
   yearOfEstablishment: string;
-}
-
-export interface Address {
-  id: string;
-  street: string;
-  city: string;
-  zip: string;
-  state: string;
-  country: string;
-  isSelected: boolean;
-  createdAt: Date;
-  updatedAt: Date;
 }

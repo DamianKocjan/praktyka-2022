@@ -6,7 +6,7 @@ import { RouterLink } from "vue-router";
 import router from "@/router";
 import { useAuthStore } from "@/stores/auth";
 import axios from "@/utils/axios";
-import type { RegisterRequest, RegisterResponse } from "@/types";
+import type { RegisterData, RegisterResponse } from "@/types";
 
 const authStore = useAuthStore();
 
@@ -56,7 +56,7 @@ async function register(e: Event) {
       firstName: firstNameVal,
       lastName: lastNameVal,
       dateOfBirth: dateOfBirthVal,
-    } as RegisterRequest);
+    } as RegisterData);
 
     router.push("/login");
   } catch (error) {

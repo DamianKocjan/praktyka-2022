@@ -23,7 +23,7 @@ module.exports.verifyToken = (req, res, next) => {
 
 module.exports.isAdmin = async (req, res, next) => {
   const roles = await query(
-    "SELECT * FROM UserRole WHERE userId = ? LEFT JOIN Role ON UserRole.roleId = Role.id",
+    "SELECT * FROM UserRole ur LEFT JOIN Role r ON ur.roleId = r.id WHERE ur.userId = ?",
     [req.userId]
   );
 

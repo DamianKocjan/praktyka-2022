@@ -45,9 +45,13 @@ function handleOpenChange(isOpen: boolean) {
 async function createOrder(e: Event) {
   e.preventDefault();
 
+  if (!selectedSale.value) {
+    return;
+  }
+
   try {
     await axios.post("/orders", {
-      saleId: selectedSale.value!.id,
+      saleId: selectedSale.value.id,
     });
   } catch (error) {
     console.log(error);

@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 import router from "@/router";
 import axios from "@/utils/axios";
-import type { User } from "@/types";
+import type { LoginData, LoginResponse, MeResponse, User } from "@/types";
 
 interface AuthState {
   user: User | null;
@@ -24,8 +24,8 @@ export const useAuthStore = defineStore({
     isAdmin: (state) => state.roles.includes("ROLE_ADMIN"),
   },
   actions: {
-    async login({ email, password }: { email: string; password: string }) {
-      const { data: result } = await axios.post("/auth/login", {
+    async login({ email, password }: LoginData) {
+      const { data: result } = await axios.post<LoginResponse>("/auth/login", {
         email,
         password,
       });
@@ -56,7 +56,7 @@ export const useAuthStore = defineStore({
         return this.user;
       }
 
-      const { data: result } = await axios.get("/auth/me");
+      const { data: result } = await axios.get<MeResponse>("/auth/me");
 
       this.user = result.data.user;
       this.roles = result.data.roles;

@@ -1,29 +1,66 @@
 <script setup lang="ts">
+import { CheckIcon } from "@heroicons/vue/outline";
 import { onMounted, ref } from "vue";
 
 import VContainer from "@/components/VContainer.vue";
 import VSpinner from "@/components/VSpinner.vue";
 import axios from "@/utils/axios";
+import type { MeResponse, User } from "@/types";
+import VButton from "@/components/VButton.vue";
+import VBanner from "@/components/Banner/VBanner.vue";
+import VIconWrapper from "@/components/Banner/IconWrapper.vue";
 
 onMounted(async () => {
   await fetchUser();
 });
 
 const isEdited = ref(false);
-const user = ref({
+const updatedSuccessfully = ref<boolean | null>(null);
+const user = ref<User>({
+  id: "",
   email: "",
-  password: "",
-  confirmPassword: "",
   phoneNumber: "",
   firstName: "",
   lastName: "",
-  dateOfBirth: "",
+  dateOfBirth: "" as unknown as Date,
+  country: "",
+  state: "",
+  zip: "",
+  city: "",
+  street: "",
+  createdAt: "" as unknown as Date,
+  updatedAt: "" as unknown as Date,
 });
 
 async function fetchUser() {
-  const { data: result } = await axios.get("/auth/me");
+  const { data: result } = await axios.get<MeResponse>("/auth/me");
 
   user.value = result.data.user;
+}
+
+// TODO: add type for event
+function handleEdit(e: any) {
+  e.preventDefault();
+
+  isEdited.value = true;
+  user.value = { ...user.value, [e.target.name]: e.target.value };
+}
+
+async function handleUpdateForm(e: Event) {
+  e.preventDefault();
+
+  try {
+    await axios.put(`/users/${user.value.id}`, user.value);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isEdited.value = false;
+    updatedSuccessfully.value = true;
+  }
+}
+
+function handleOpenChange(isOpen: boolean) {
+  updatedSuccessfully.value = isOpen;
 }
 </script>
 
@@ -31,6 +68,21 @@ async function fetchUser() {
   <main>
     <Suspense>
       <VContainer>
+        <VBanner
+          heading="hello world"
+          :open="(updatedSuccessfully as boolean)"
+          @open="handleOpenChange"
+          v-if="updatedSuccessfully"
+        >
+          <template #icon>
+            <VIconWrapper>
+              <CheckIcon class="h-6 w-6 text-white" aria-hidden="true" />
+            </VIconWrapper>
+          </template>
+
+          Zaktualizowano pomyślnie!
+        </VBanner>
+
         <div class="hidden sm:block" aria-hidden="true">
           <div class="py-5">
             <div class="border-t border-gray-200" />
@@ -58,14 +110,17 @@ async function fetchUser() {
                         <label
                           for="first-name"
                           class="block text-sm font-medium text-gray-700"
-                          >Imię</label
                         >
+                          Imię
+                        </label>
                         <input
                           type="text"
-                          name="first-name"
+                          name="firstName"
                           id="first-name"
                           autocomplete="given-name"
                           class="mt-1 focus:ring-gray-800 focus:border-gray-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          :value="user.firstName"
+                          @input="(e) => handleEdit(e)"
                         />
                       </div>
 
@@ -73,44 +128,53 @@ async function fetchUser() {
                         <label
                           for="last-name"
                           class="block text-sm font-medium text-gray-700"
-                          >Nazwisko</label
                         >
+                          Nazwisko
+                        </label>
                         <input
                           type="text"
-                          name="last-name"
+                          name="lastName"
                           id="last-name"
                           autocomplete="family-name"
                           class="mt-1 focus:ring-gray-800 focus:border-gray-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          :value="user.lastName"
+                          @input="(e) => handleEdit(e)"
                         />
                       </div>
 
                       <div class="col-span-6 sm:col-span-3">
                         <label
-                          for="last-name"
+                          for="phoneNumber"
                           class="block text-sm font-medium text-gray-700"
-                          >Numer telefonu</label
                         >
+                          Numer telefonu
+                        </label>
                         <input
                           type="text"
-                          name="last-name"
-                          id="last-name"
+                          name="phoneNumber"
+                          id="phoneNumber"
                           autocomplete="family-name"
                           class="mt-1 focus:ring-gray-800 focus:border-gray-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          :value="user.phoneNumber"
+                          @input="(e) => handleEdit(e)"
                         />
                       </div>
 
                       <div class="col-span-6 sm:col-span-4">
                         <label
-                          for="email-address"
+                          for="email"
                           class="block text-sm font-medium text-gray-700"
-                          >Adres E-mail</label
                         >
+                          Adres E-mail
+                        </label>
                         <input
                           type="text"
-                          name="email-address"
-                          id="email-address"
+                          name="email"
+                          id="email"
                           autocomplete="email"
                           class="mt-1 focus:ring-gray-800 focus:border-gray-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          :value="user.email"
+                          @input="(e) => handleEdit(e)"
                         />
                       </div>
 
@@ -118,35 +182,41 @@ async function fetchUser() {
                         <label
                           for="country"
                           class="block text-sm font-medium text-gray-700"
-                          >Kraj</label
                         >
+                          Kraj
+                        </label>
                         <select
                           id="country"
                           name="country"
                           autocomplete="country-name"
                           class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-gray-800 focus:border-gray-800 sm:text-sm"
+                          :value="user.country"
+                          @input="(e) => handleEdit(e)"
                         >
-                          <option>Polska</option>
-                          <option>Stany Zjedoczone</option>
-                          <option>Kanada</option>
-                          <option>Niemcy</option>
-                          <option>Ukraina</option>
-                          <option>Wielka Brytania</option>
+                          <option value="poland">Polska</option>
+                          <option value="usa">Stany Zjedoczone</option>
+                          <option value="canada">Kanada</option>
+                          <option value="germany">Niemcy</option>
+                          <option value="ukraine">Ukraina</option>
+                          <option value="great-britain">Wielka Brytania</option>
                         </select>
                       </div>
 
                       <div class="col-span-6">
                         <label
-                          for="street-address"
+                          for="street"
                           class="block text-sm font-medium text-gray-700"
-                          >Ulica</label
                         >
+                          Ulica
+                        </label>
                         <input
                           type="text"
-                          name="street-address"
-                          id="street-address"
-                          autocomplete="street-address"
+                          name="street"
+                          id="street"
+                          autocomplete="street"
                           class="mt-1 focus:ring-gray-800 focus:border-gray-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          :value="user.street"
+                          @input="(e) => handleEdit(e)"
                         />
                       </div>
 
@@ -154,44 +224,53 @@ async function fetchUser() {
                         <label
                           for="city"
                           class="block text-sm font-medium text-gray-700"
-                          >Miasto</label
                         >
+                          Miasto
+                        </label>
                         <input
                           type="text"
                           name="city"
                           id="city"
                           autocomplete="address-level2"
                           class="mt-1 focus:ring-gray-800 focus:border-gray-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          :value="user.city"
+                          @input="(e) => handleEdit(e)"
                         />
                       </div>
 
                       <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                         <label
-                          for="region"
+                          for="state"
                           class="block text-sm font-medium text-gray-700"
-                          >Województwo</label
                         >
+                          Województwo
+                        </label>
                         <input
                           type="text"
-                          name="region"
-                          id="region"
+                          name="state"
+                          id="state"
                           autocomplete="address-level1"
                           class="mt-1 focus:ring-gray-800 focus:border-gray-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          :value="user.state"
+                          @input="(e) => handleEdit(e)"
                         />
                       </div>
 
                       <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                         <label
-                          for="postal-code"
+                          for="zip"
                           class="block text-sm font-medium text-gray-700"
-                          >Kod pocztowy</label
                         >
+                          Kod pocztowy
+                        </label>
                         <input
                           type="text"
-                          name="postal-code"
-                          id="postal-code"
+                          name="zip"
+                          id="zip"
                           autocomplete="postal-code"
                           class="mt-1 focus:ring-gray-800 focus:border-gray-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          :value="user.zip"
+                          @input="(e) => handleEdit(e)"
                         />
                       </div>
                     </div>
@@ -247,8 +326,9 @@ async function fetchUser() {
                             <label
                               for="comments"
                               class="font-medium text-gray-700"
-                              >Uwagi</label
                             >
+                              Uwagi
+                            </label>
                             <p class="text-gray-500">
                               Otrzymuj powiadomienia, gdy pojawią się jakieś
                               nowości.
@@ -268,8 +348,9 @@ async function fetchUser() {
                             <label
                               for="candidates"
                               class="font-medium text-gray-700"
-                              >Oferty</label
                             >
+                              Oferty
+                            </label>
                             <p class="text-gray-500">
                               Otrzymuj powiadomienia, gdy wystąpi jakaś
                               promocja.
@@ -290,8 +371,8 @@ async function fetchUser() {
                               for="offers"
                               class="font-medium text-gray-700"
                             >
-                              Każde powiadomienia</label
-                            >
+                              Każde powiadomienia
+                            </label>
                             <p class="text-gray-500">
                               Dostawaj każde możliwe powiadomienie.
                             </p>
@@ -354,13 +435,18 @@ async function fetchUser() {
                       </div>
                     </fieldset>
                   </div>
-                  <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                    <button
+                  <div
+                    class="px-4 py-3 bg-gray-50 text-right sm:px-6"
+                    v-if="isEdited"
+                  >
+                    <VButton
                       type="submit"
-                      class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800"
+                      size="medium"
+                      intent="primary"
+                      @click="handleUpdateForm"
                     >
                       Zapisz
-                    </button>
+                    </VButton>
                   </div>
                 </div>
               </form>

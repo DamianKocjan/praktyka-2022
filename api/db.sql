@@ -66,6 +66,11 @@ CREATE TABLE `User` (
     `firstName` varchar(255) NOT NULL,
     `lastName` varchar(255) NOT NULL,
     `dateOfBirth` TIMESTAMP NOT NULL,
+    `street` varchar(255),
+    `city` varchar(255),
+    `zip` varchar(255),
+    `state` varchar(255),
+    `country` varchar(255),
     `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
@@ -97,36 +102,6 @@ CREATE TABLE `Manufacturer` (
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `Address` (
-    `id` INT NOT NULL AUTO_INCREMENT,
-    `street` varchar(255) NOT NULL,
-    `city` varchar(255) NOT NULL,
-    `zip` varchar(255) NOT NULL,
-    `state` varchar(255) NOT NULL,
-    `country` varchar(255) NOT NULL,
-    `isSelected` BOOLEAN NOT NULL DEFAULT 1,
-    `userId` INT NOT NULL,
-    `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
-);
-
--- CREATE TABLE `Session` (
-
---     `id` INT NOT NULL AUTO_INCREMENT,
-
---     `expiresAt` TIMESTAMP NOT NULL,
-
---     `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
---     `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
---     `userId` INT NOT NULL,
-
---     PRIMARY KEY (`id`)
-
--- );
-
 ALTER TABLE
     `Vehicle`
 ADD
@@ -156,19 +131,6 @@ ALTER TABLE
     `Order`
 ADD
     CONSTRAINT `Order_fk1` FOREIGN KEY (`userId`) REFERENCES `User`(`id`);
-
-ALTER TABLE
-    `Address`
-ADD
-    CONSTRAINT `Address_fk0` FOREIGN KEY (`userId`) REFERENCES `User`(`id`);
-
--- ALTER TABLE
-
---     `Session`
-
--- ADD
-
---     CONSTRAINT `Session_fk0` FOREIGN KEY (`userId`) REFERENCES `User`(`id`);
 
 ALTER TABLE
     `UserRole`
