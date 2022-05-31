@@ -60,6 +60,8 @@ export const useAuthStore = defineStore({
 
       this.user = result.data.user;
       this.roles = result.data.roles;
+
+      return this.user;
     },
   },
 });

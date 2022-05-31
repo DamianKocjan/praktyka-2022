@@ -1,19 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 
-import router from "@/router";
 import VContainer from "@/components/VContainer.vue";
 import VSpinner from "@/components/VSpinner.vue";
-import { useAuthStore } from "@/stores/auth";
 import axios from "@/utils/axios";
 
-const authStore = useAuthStore();
-
 onMounted(async () => {
-  if (authStore.isAuthenticated) {
-    router.push(authStore.returnUrl || "/");
-  }
-
   await fetchUser();
 });
 
@@ -73,7 +65,7 @@ async function fetchUser() {
                           name="first-name"
                           id="first-name"
                           autocomplete="given-name"
-                          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          class="mt-1 focus:ring-gray-800 focus:border-gray-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         />
                       </div>
 
@@ -88,7 +80,7 @@ async function fetchUser() {
                           name="last-name"
                           id="last-name"
                           autocomplete="family-name"
-                          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          class="mt-1 focus:ring-gray-800 focus:border-gray-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         />
                       </div>
 
@@ -103,7 +95,7 @@ async function fetchUser() {
                           name="last-name"
                           id="last-name"
                           autocomplete="family-name"
-                          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          class="mt-1 focus:ring-gray-800 focus:border-gray-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         />
                       </div>
 
@@ -118,7 +110,7 @@ async function fetchUser() {
                           name="email-address"
                           id="email-address"
                           autocomplete="email"
-                          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          class="mt-1 focus:ring-gray-800 focus:border-gray-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         />
                       </div>
 
@@ -132,7 +124,7 @@ async function fetchUser() {
                           id="country"
                           name="country"
                           autocomplete="country-name"
-                          class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-gray-800 focus:border-gray-800 sm:text-sm"
                         >
                           <option>Polska</option>
                           <option>Stany Zjedoczone</option>
@@ -154,7 +146,7 @@ async function fetchUser() {
                           name="street-address"
                           id="street-address"
                           autocomplete="street-address"
-                          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          class="mt-1 focus:ring-gray-800 focus:border-gray-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         />
                       </div>
 
@@ -169,7 +161,7 @@ async function fetchUser() {
                           name="city"
                           id="city"
                           autocomplete="address-level2"
-                          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          class="mt-1 focus:ring-gray-800 focus:border-gray-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         />
                       </div>
 
@@ -184,7 +176,7 @@ async function fetchUser() {
                           name="region"
                           id="region"
                           autocomplete="address-level1"
-                          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          class="mt-1 focus:ring-gray-800 focus:border-gray-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         />
                       </div>
 
@@ -199,7 +191,7 @@ async function fetchUser() {
                           name="postal-code"
                           id="postal-code"
                           autocomplete="postal-code"
-                          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          class="mt-1 focus:ring-gray-800 focus:border-gray-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         />
                       </div>
                     </div>
@@ -248,7 +240,7 @@ async function fetchUser() {
                               id="comments"
                               name="comments"
                               type="checkbox"
-                              class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                              class="focus:ring-gray-800 h-4 w-4 text-gray-800 border-gray-300 rounded"
                             />
                           </div>
                           <div class="ml-3 text-sm">
@@ -269,7 +261,7 @@ async function fetchUser() {
                               id="candidates"
                               name="candidates"
                               type="checkbox"
-                              class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                              class="focus:ring-gray-800 h-4 w-4 text-gray-800 border-gray-300 rounded"
                             />
                           </div>
                           <div class="ml-3 text-sm">
@@ -290,7 +282,7 @@ async function fetchUser() {
                               id="offers"
                               name="offers"
                               type="checkbox"
-                              class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                              class="focus:ring-gray-800 h-4 w-4 text-gray-800 border-gray-300 rounded"
                             />
                           </div>
                           <div class="ml-3 text-sm">
@@ -322,7 +314,7 @@ async function fetchUser() {
                             id="push-everything"
                             name="push-notifications"
                             type="radio"
-                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                            class="focus:ring-gray-800 h-4 w-4 text-gray-800 border-gray-300"
                           />
                           <label
                             for="push-everything"
@@ -336,7 +328,7 @@ async function fetchUser() {
                             id="push-email"
                             name="push-notifications"
                             type="radio"
-                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                            class="focus:ring-gray-800 h-4 w-4 text-gray-800 border-gray-300"
                           />
                           <label
                             for="push-email"
@@ -350,7 +342,7 @@ async function fetchUser() {
                             id="push-nothing"
                             name="push-notifications"
                             type="radio"
-                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                            class="focus:ring-gray-800 h-4 w-4 text-gray-800 border-gray-300"
                           />
                           <label
                             for="push-nothing"
@@ -365,7 +357,7 @@ async function fetchUser() {
                   <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
                     <button
                       type="submit"
-                      class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800"
                     >
                       Zapisz
                     </button>
