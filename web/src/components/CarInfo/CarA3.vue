@@ -249,7 +249,7 @@ import { ref } from "vue";
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
 
 const product = {
-  name: "A3 Sportback",
+  name: "Audi A3 Sportback",
   price: "118 090 PLN",
   href: "#",
   images: [
