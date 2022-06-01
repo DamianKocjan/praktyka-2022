@@ -21,7 +21,7 @@ const isMenuOpen = ref(false);
 
 const navigation = ref([
   { name: "Home", href: "/", isActive: true },
-  { name: "Sales", href: "/sales", isActive: false },
+  { name: "W sprzedaży", href: "/sales", isActive: false },
 ]);
 
 function toggleMenu() {
@@ -34,12 +34,12 @@ watch(
     if (isAuthenticated) {
       navigation.value = [
         { name: "Home", href: "/", isActive: true },
-        { name: "Sales", href: "/sales", isActive: false },
+        { name: "W sprzedaży", href: "/sales", isActive: false },
       ];
     } else {
       navigation.value = [
         { name: "Home", href: "/", isActive: true },
-        { name: "Sales", href: "/sales", isActive: false },
+        { name: "W sprzedaży", href: "/sales", isActive: false },
       ];
     }
   }
