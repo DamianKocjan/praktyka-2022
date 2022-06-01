@@ -58,6 +58,7 @@ watch(
   }
 );
 </script>
+
 <template>
   <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">

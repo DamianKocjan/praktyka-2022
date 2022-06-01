@@ -1,3 +1,23 @@
+<script setup lang="ts">
+import { defineEmits } from "vue";
+import {
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  TransitionChild,
+  TransitionRoot,
+} from "@headlessui/vue";
+import VButton from "@/components/VButton.vue";
+
+const emit = defineEmits(["open"]);
+
+function closeModal() {
+  emit("open", false);
+}
+
+defineProps<{ open: boolean; title: string }>();
+</script>
+
 <template>
   <TransitionRoot as="template" :show="open">
     <Dialog as="div" class="relative z-10" @click="closeModal">
@@ -78,23 +98,3 @@
     </Dialog>
   </TransitionRoot>
 </template>
-
-<script setup lang="ts">
-import { defineEmits } from "vue";
-import {
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-  TransitionChild,
-  TransitionRoot,
-} from "@headlessui/vue";
-import VButton from "@/components/VButton.vue";
-
-const emit = defineEmits(["open"]);
-
-function closeModal() {
-  emit("open", false);
-}
-
-defineProps<{ open: boolean; title: string }>();
-</script>

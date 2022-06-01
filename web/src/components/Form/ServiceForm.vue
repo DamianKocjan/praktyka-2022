@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import VContainer from "@/components/VContainer.vue";
 </script>
+
 <template>
   <VContainer>
     <div class="hidden sm:block" aria-hidden="true">

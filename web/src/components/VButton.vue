@@ -66,6 +66,7 @@ defineProps<{
   className?: string;
 }>();
 </script>
+
 <template>
   <button :class="cx(button({ intent, size }), className)">
     <slot />
