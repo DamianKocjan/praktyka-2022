@@ -8,7 +8,7 @@ module.exports.getAll = async (req, res, next) => {
       [userId]
     );
 
-    res.json({
+    res.status(200).json({
       data: orders,
     });
   } catch (error) {
@@ -25,7 +25,7 @@ module.exports.get = async (req, res, next) => {
       [req.params.id, userId]
     );
 
-    res.json({
+    res.status(200).json({
       data: order,
     });
   } catch (error) {
@@ -48,7 +48,7 @@ module.exports.create = async (req, res, next) => {
       [insertId]
     );
 
-    res.json({
+    res.status(201).json({
       data: order,
     });
   } catch (error) {
@@ -79,7 +79,7 @@ module.exports.update = async (req, res, next) => {
       [req.params.id]
     );
 
-    res.json({
+    res.status(204).json({
       data: order,
     });
   } catch (error) {

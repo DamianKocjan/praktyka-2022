@@ -4,7 +4,7 @@ module.exports.getAll = async (_req, res, next) => {
   try {
     const manufacturers = await query("SELECT * FROM manufacturer");
 
-    res.json({
+    res.status(200).json({
       data: manufacturers,
     });
   } catch (error) {
@@ -20,7 +20,7 @@ module.exports.get = async (req, res, next) => {
       [req.params.id]
     );
 
-    res.json({
+    res.status(200).json({
       data: manufacturer,
     });
   } catch (error) {
@@ -46,7 +46,7 @@ module.exports.create = async (req, res, next) => {
       [insertId]
     );
 
-    res.json({
+    res.status(201).json({
       data: manufacturer,
     });
   } catch (error) {
@@ -74,7 +74,7 @@ module.exports.update = async (req, res, next) => {
       [req.params.id]
     );
 
-    res.json({
+    res.status(200).json({
       data: manufacturer,
     });
   } catch (error) {
@@ -91,7 +91,7 @@ module.exports.delete = async (req, res, next) => {
 
     await query("DELETE FROM manufacturer WHERE id = ?", [req.params.id]);
 
-    res.json({
+    res.status(204).json({
       message: "Manufacturer deleted",
       status: "success",
     });

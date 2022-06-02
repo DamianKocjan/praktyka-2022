@@ -26,7 +26,7 @@ module.exports.login = async (req, res, next) => {
       expiresIn: 86400, // 24 hours
     });
 
-    res.json({
+    res.status(201).json({
       data: { user, roles, token },
     });
   } catch (error) {
@@ -53,10 +53,9 @@ module.exports.register = async (req, res, next) => {
       "INSERT INTO user (`email`, `passwordHashed`, `phoneNumber`, `firstName`, `lastName`, `dateOfBirth`) VALUES (?,?,?,?,?,?)",
       data
     );
-    const [user] = await query("SELECT * FROM user WHERE id = ?", [insertId]);
-    delete user.passwordHashed;
+    const [user] = await query("SELECT id, email, phoneNumber, firstName, lastName, dateOfBirth, street, city, zip, state, country, createdAt, updatedAt FROM user WHERE id = ?", [insertId]);
 
-    res.json({
+    res.status(201).json({
       data: user,
     });
   } catch (error) {
@@ -69,12 +68,10 @@ module.exports.me = async (req, res, next) => {
   try {
     const { userId } = req;
 
-    const user = await getOneOr404("SELECT * FROM user WHERE id = ?", [userId]);
+    const user = await getOneOr404("SELECT id, email, phoneNumber, firstName, lastName, dateOfBirth, street, city, zip, state, country, createdAt, updatedAt FROM user WHERE id = ?", [userId]);
     const roles = await getRoles(user.id);
 
-    delete user.passwordHashed;
-
-    res.json({
+    res.status(200).json({
       data: {
         user,
         roles,
